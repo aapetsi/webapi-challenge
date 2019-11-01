@@ -26,13 +26,24 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
+* Middlewares
+* Routing
+
 - [ ] Describe Middleware?
+
+A middleware is a sort of validation or 'security checkpoint' in our express application. The middleware runs and make sures all requirements by the middleware is set before we are able to continue to our route and send whichever resource is requested from the API.
 
 - [ ] Describe a Resource?
 
+A resource is what the API usually returns back to us. This is usually some data from our database.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+The API can return a status code of 200 to let us know that a request was successful.
+
 - [ ] How can we partition our application into sub-applications?
+
+We can make use of the express router middleware to have sub routes in our applications.
 
 ## Project Setup
 
