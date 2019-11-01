@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const projects = require('./routes/api/projects');
+const actions = require('./routes/api/actions');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 
 // subroutes middleware
 app.use('/api/projects', projects);
+app.use('/api/actions', actions);
 
 app.use(express.static(__dirname + '/client/build'));
 
