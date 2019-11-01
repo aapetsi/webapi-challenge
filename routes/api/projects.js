@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// load middlewares
+const middlewares = require('../../middlewares/index');
+
 // load database model
 const db = require('../../data/helpers/projectModel');
 
@@ -24,7 +27,7 @@ router.get('/', (req, res) => {
 });
 
 // add project
-router.post('/', (req, res) => {
+router.post('/', [middlewares.validateBody], (req, res) => {
   const newProject = {
     name: req.body.name,
     description: req.body.description
@@ -39,7 +42,7 @@ router.post('/', (req, res) => {
 });
 
 // delete project
-router.delete('/:id', (req, res) => {
+router.delete('/:id', middlewares.validateId, (req, res) => {
   const { id } = req.params;
   db.remove(id)
     .then(project => {
@@ -55,24 +58,28 @@ router.delete('/:id', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
-  const { id } = req.params;
-  const updatedData = {
-    name: req.body.name,
-    description: req.body.description
-  };
-  db.update(id, updatedData)
-    .then(project => {
-      if (!project) {
-        return res
-          .status(404)
-          .json({ message: 'Project with the given id does not exist' });
-      }
-      res.status(200).json(project);
-    })
-    .catch(err => {
-      res.status(500).json({ errorMessage: `${err}` });
-    });
-});
+router.put(
+  '/:id',
+  [middlewares.validateId, middlewares.validateBody],
+  (req, res) => {
+    const { id } = req.params;
+    const updatedData = {
+      name: req.body.name,
+      description: req.body.description
+    };
+    db.update(id, updatedData)
+      .then(project => {
+        if (!project) {
+          return res
+            .status(404)
+            .json({ message: 'Project with the given id does not exist' });
+        }
+        res.status(200).json(project);
+      })
+      .catch(err => {
+        res.status(500).json({ errorMessage: `${err}` });
+      });
+  }
+);
 
 module.exports = router;
